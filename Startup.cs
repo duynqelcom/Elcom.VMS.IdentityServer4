@@ -43,6 +43,11 @@ namespace Elcom.VMS.IdentityServer4
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddCors(p => p.AddPolicy("corsapp", builder =>
+            {
+                builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+            }));
+
             var builder = services.AddIdentityServer(options =>
             {
                 options.Events.RaiseErrorEvents = true;
@@ -83,7 +88,7 @@ namespace Elcom.VMS.IdentityServer4
             }
 
             app.UseStaticFiles();
-
+            app.UseCors("corsapp");
             app.UseRouting();
             app.UseIdentityServer();
             app.UseAuthorization();
